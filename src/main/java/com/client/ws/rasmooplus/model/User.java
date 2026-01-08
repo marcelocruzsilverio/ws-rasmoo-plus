@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
-public class Users implements Serializable {
+public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -26,23 +26,23 @@ public class Users implements Serializable {
     private String cpf;
 
     @Column(name = "dt_subscription")
-    private LocalDate dtSubscription;
+    private LocalDate dtSubscription = LocalDate.now();
 
     @Column(name = "dt_expiration")
     private LocalDate dtExpiration;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_type_id")
     private UserType userType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subscriptions_type_id")
     private SubscriptionType subscriptionType;
 
-    public Users() {
+    public User() {
     }
 
-    public Users(Long id, String name, String email, String phone, String cpf, LocalDate dtSubscription, LocalDate dtExpiration, UserType userType, SubscriptionType subscriptionType) {
+    public User(Long id, String name, String email, String phone, String cpf, LocalDate dtSubscription, LocalDate dtExpiration, UserType userType, SubscriptionType subscriptionType) {
         this.id = id;
         this.name = name;
         this.email = email;
