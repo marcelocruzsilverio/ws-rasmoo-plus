@@ -2,6 +2,7 @@ package com.client.ws.rasmooplus.controller;
 
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repository.SubscriptionTypeRepository;
+import com.client.ws.rasmooplus.service.SubscriptionTypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +14,14 @@ import java.util.List;
 @RequestMapping("/subscription-type")
 public class SubscriptionTypeController {
 
-    private SubscriptionTypeRepository subscriptionTypeRepository;
+    private final SubscriptionTypeService subscriptionTypeService;
 
-    public SubscriptionTypeController(SubscriptionTypeRepository subscriptionTypeRepository) {
-        this.subscriptionTypeRepository = subscriptionTypeRepository;
+    public SubscriptionTypeController(SubscriptionTypeService subscriptionTypeService) {
+        this.subscriptionTypeService = subscriptionTypeService;
     }
 
     @GetMapping()
     public ResponseEntity<List<SubscriptionType>> findyAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findAll());
     }
 }
