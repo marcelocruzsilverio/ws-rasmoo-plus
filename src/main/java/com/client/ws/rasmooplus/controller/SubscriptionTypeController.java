@@ -25,12 +25,9 @@ public class SubscriptionTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubscriptionType> findyById(@PathVariable("id") Long id) {
+    public ResponseEntity<SubscriptionType> findyById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findById(id));
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
+
 }
