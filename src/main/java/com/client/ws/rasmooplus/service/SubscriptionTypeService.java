@@ -10,7 +10,7 @@ public interface SubscriptionTypeService {
 
     SubscriptionType findById(Long id);
 
-    SubscriptionType updateSubscriptionType(Long id, SubscriptionType subscriptionType);
+    SubscriptionType updateSubscriptionType(Long id, SubscriptionTypeDto subscriptionTypeDto);
 
     SubscriptionType createSubscriptionType(SubscriptionTypeDto subscriptionTypeDto);
 

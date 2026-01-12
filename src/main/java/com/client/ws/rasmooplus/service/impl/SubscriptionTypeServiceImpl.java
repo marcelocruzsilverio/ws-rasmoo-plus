@@ -6,6 +6,7 @@ import com.client.ws.rasmooplus.exception.NotFoundException;
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repository.SubscriptionTypeRepository;
 import com.client.ws.rasmooplus.service.SubscriptionTypeService;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,17 +30,23 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public SubscriptionType findById(Long id) {
-       Optional<SubscriptionType> subscriptionType = subscriptionTypeRepository.findById(id);
-
-       if (subscriptionType.isEmpty()) {
-           throw new NotFoundException("SubscriptionType not found");
-       }
-       return subscriptionType.get();
+        return getSubscriptionType(id);
     }
 
+
+
     @Override
-    public SubscriptionType updateSubscriptionType(Long id, SubscriptionType subscriptionType) {
-        return null;
+    public SubscriptionType updateSubscriptionType(Long id, SubscriptionTypeDto subscriptionTypeDto) {
+        getSubscriptionType(id);
+
+        return subscriptionTypeRepository.save(SubscriptionType.builder()
+                .id(id)
+                .name(subscriptionTypeDto.getName())
+                .price(subscriptionTypeDto.getPrice())
+                .accessMonths(subscriptionTypeDto.getAccessMonths())
+                .productKey(subscriptionTypeDto.getProductKey())
+                .build());
+
     }
 
     @Override
@@ -59,5 +66,14 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     @Override
     public SubscriptionType deleteSubscriptionType(Long id) {
         return null;
+    }
+
+    private @NonNull SubscriptionType getSubscriptionType(Long id) {
+        Optional<SubscriptionType> subscriptionType = subscriptionTypeRepository.findById(id);
+
+        if (subscriptionType.isEmpty()) {
+            throw new NotFoundException("SubscriptionType not found");
+        }
+        return subscriptionType.get();
     }
 }
