@@ -22,7 +22,7 @@ public class SubscriptionType implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscriptions_type_id")
     private Long id;
 
@@ -33,7 +33,7 @@ public class SubscriptionType implements Serializable {
 
     private BigDecimal price;
 
-    @Column(name = "product_key")
+    @Column(name = "product_key", unique = true)
     private String productKey;
 
 }
