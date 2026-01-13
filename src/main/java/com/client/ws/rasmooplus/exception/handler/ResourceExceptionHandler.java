@@ -1,5 +1,6 @@
 package com.client.ws.rasmooplus.exception.handler;
 
+import com.client.ws.rasmooplus.dto.error.ResponseErrorMessageDto;
 import com.client.ws.rasmooplus.exception.BadRequestException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ResourceExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ResponseErrorMessageDto> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseErrorMessageDto.builder()
+                        .message(ex.getMessage())
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .statusCode(HttpStatus.NOT_FOUND.value()).build());
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handleBadRequestException(BadRequestException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ResponseErrorMessageDto> handleBadRequestException(BadRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseErrorMessageDto.builder()
+                        .message(ex.getMessage())
+                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .statusCode(HttpStatus.BAD_REQUEST.value()).build());
     }
 }
