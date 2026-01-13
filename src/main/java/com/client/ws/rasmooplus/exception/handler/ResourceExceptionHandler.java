@@ -1,12 +1,16 @@
 package com.client.ws.rasmooplus.exception.handler;
 
+import com.client.ws.rasmooplus.dto.error.FieldErrorMessageDto;
 import com.client.ws.rasmooplus.dto.error.ResponseErrorMessageDto;
 import com.client.ws.rasmooplus.exception.BadRequestException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class ResourceExceptionHandler {
@@ -25,5 +29,19 @@ public class ResourceExceptionHandler {
                         .message(ex.getMessage())
                         .httpStatus(HttpStatus.BAD_REQUEST)
                         .statusCode(HttpStatus.BAD_REQUEST.value()).build());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<FieldErrorMessageDto>> handleFieldErrorMessage(MethodArgumentNotValidException ex) {
+
+        List<FieldErrorMessageDto> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> new FieldErrorMessageDto(
+                        error.getField(),
+                        error.getDefaultMessage()
+                ))
+                .toList();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 }
