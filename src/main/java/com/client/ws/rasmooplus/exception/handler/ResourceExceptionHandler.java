@@ -4,6 +4,7 @@ import com.client.ws.rasmooplus.dto.error.FieldErrorMessageDto;
 import com.client.ws.rasmooplus.dto.error.ResponseErrorMessageDto;
 import com.client.ws.rasmooplus.exception.BadRequestException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,5 +44,13 @@ public class ResourceExceptionHandler {
                 ))
                 .toList();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ResponseErrorMessageDto> handleBadRequestException(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseErrorMessageDto.builder()
+                .message(ex.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .statusCode(HttpStatus.BAD_REQUEST.value()).build());
     }
 }

@@ -15,14 +15,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "users_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String name;
@@ -34,7 +34,7 @@ public class User implements Serializable {
     private String cpf;
 
     @Column(name = "dt_subscription")
-    private LocalDate dtSubscription = LocalDate.now();
+    private LocalDate dtSubscription;
 
     @Column(name = "dt_expiration")
     private LocalDate dtExpiration;
