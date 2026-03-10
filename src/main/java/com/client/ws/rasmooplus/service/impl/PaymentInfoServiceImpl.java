@@ -3,7 +3,10 @@ package com.client.ws.rasmooplus.service.impl;
 import com.client.ws.rasmooplus.dto.PaymentProcessDto;
 import com.client.ws.rasmooplus.exception.BusinessException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
+import com.client.ws.rasmooplus.mapper.UserPaymentInfoMapper;
 import com.client.ws.rasmooplus.model.User;
+import com.client.ws.rasmooplus.model.UserPaymentInfo;
+import com.client.ws.rasmooplus.repository.UserPaymentInfoRepository;
 import com.client.ws.rasmooplus.repository.UserRepository;
 import com.client.ws.rasmooplus.service.PaymentInfoService;
 import org.springframework.stereotype.Service;
@@ -14,9 +17,11 @@ import java.util.Objects;
 public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     private final UserRepository userRepository;
+    private final UserPaymentInfoRepository userPaymentInfoRepository;
 
-    PaymentInfoServiceImpl(UserRepository userRepository) {
+    PaymentInfoServiceImpl(UserRepository userRepository, UserPaymentInfoRepository userPaymentInfoRepository) {
         this.userRepository = userRepository;
+        this.userPaymentInfoRepository = userPaymentInfoRepository;
     }
     @Override
     public Boolean process(PaymentProcessDto paymentProcessDto) {
@@ -29,10 +34,14 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         if (Objects.nonNull(user.getSubscriptionType())) {
             throw new BusinessException("User subscription type already exists");
         }
-        //salvar informações de pagamento
+
         //cria ou  atualiza usuario raspay
         //cria o pedido de pagamento
         //processa o pagamento
+
+        //salvar informações de pagamento
+        UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
+        userPaymentInfoRepository.save(userPaymentInfo);
         //enviar email de criação de conta
         //retorna o sucesso ou não do pagamento
 
