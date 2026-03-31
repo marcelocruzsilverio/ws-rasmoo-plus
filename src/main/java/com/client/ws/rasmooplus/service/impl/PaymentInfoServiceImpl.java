@@ -6,6 +6,7 @@ import com.client.ws.rasmooplus.dto.wsraspay.OrderDto;
 import com.client.ws.rasmooplus.dto.wsraspay.PaymentDto;
 import com.client.ws.rasmooplus.exception.BusinessException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
+import com.client.ws.rasmooplus.integration.MailIntegration;
 import com.client.ws.rasmooplus.integration.WsRaspayIntegration;
 import com.client.ws.rasmooplus.mapper.UserPaymentInfoMapper;
 import com.client.ws.rasmooplus.mapper.wsraspay.CreditCardMapper;
@@ -27,16 +28,18 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     private final UserRepository userRepository;
     private final UserPaymentInfoRepository userPaymentInfoRepository;
     private final WsRaspayIntegration wsRaspayIntegration;
+    private final MailIntegration mailIntegration;
 
-    PaymentInfoServiceImpl(UserRepository userRepository, UserPaymentInfoRepository userPaymentInfoRepository, WsRaspayIntegration wsRaspayIntegration) {
+    PaymentInfoServiceImpl(UserRepository userRepository, UserPaymentInfoRepository userPaymentInfoRepository, WsRaspayIntegration wsRaspayIntegration, MailIntegration mailIntegration) {
         this.userRepository = userRepository;
         this.userPaymentInfoRepository = userPaymentInfoRepository;
         this.wsRaspayIntegration = wsRaspayIntegration;
+        this.mailIntegration = mailIntegration;
     }
     @Override
     public Boolean process(PaymentProcessDto paymentProcessDto) {
         //verifica usuario por id e verifica se já existe assinatura
-        var userOpt = userRepository.findById(paymentProcessDto.getUserPaymentInfoDto().getId());
+        var userOpt = userRepository.findById(paymentProcessDto.getUserPaymentInfoDto().getUserId());
         if (userOpt.isEmpty()) {
             throw new NotFoundException("User not found");
         }
@@ -57,11 +60,13 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             //salvar informações de pagamento
             UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
             userPaymentInfoRepository.save(userPaymentInfo);
+            mailIntegration.send(user.getEmail(), "Usuário: " + user.getEmail() + " - Senha: alunorasmoo", "Acesso Liberado!");
+            return true;
         }
 
         //enviar email de criação de conta
         //retorna o sucesso ou não do pagamento
 
-        return null;
+        return false;
     }
 }

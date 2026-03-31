@@ -22,7 +22,7 @@ public class UserPaymentInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_payment_info_id")
     private Long id;
 
@@ -40,7 +40,7 @@ public class UserPaymentInfo implements Serializable {
 
     private BigDecimal price;
 
-    private Long instalments;
+    private Long installments;
 
     @Column(name = "dt_payment")
     private LocalDate dtPayment;

@@ -11,7 +11,7 @@ public class CreditCardMapper {
                 .month(paymentProcessDto.getUserPaymentInfoDto().getCardExpirationMonth())
                 .year(paymentProcessDto.getUserPaymentInfoDto().getCardExpirationYear())
                 .number(paymentProcessDto.getUserPaymentInfoDto().getCardNumber())
-                .installments(paymentProcessDto.getUserPaymentInfoDto().getInstalments())
+                .installments(paymentProcessDto.getUserPaymentInfoDto().getInstallments())
                 .build();
     }
 }

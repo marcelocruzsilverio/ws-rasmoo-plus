@@ -7,12 +7,13 @@ import com.client.ws.rasmooplus.model.UserPaymentInfo;
 public class UserPaymentInfoMapper {
     public static UserPaymentInfo fromDtoToEntity(UserPaymentInfoDto userPaymentInfoDto, User user) {
         return UserPaymentInfo.builder()
-                .id(userPaymentInfoDto.getId())
+              //  .id(userPaymentInfoDto.getId())
                 .cardNumber(userPaymentInfoDto.getCardNumber())
                 .cardExpirationMonth(userPaymentInfoDto.getCardExpirationMonth())
                 .cardExpirationYear(userPaymentInfoDto.getCardExpirationYear())
                 .cardSecurityCode(userPaymentInfoDto.getCardSecurityCode())
                 .price(userPaymentInfoDto.getPrice())
+                .installments(userPaymentInfoDto.getInstallments())
                 .dtPayment(userPaymentInfoDto.getDtPayment())
                 .user(user)
                 .build();
