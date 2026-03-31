@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.io.Serializable;
 @Builder
 @Entity
 @Table(name = "user_type")
-public class UserType implements Serializable {
+public class UserType implements Serializable, GrantedAuthority {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,4 +30,8 @@ public class UserType implements Serializable {
 
     private String description;
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }
