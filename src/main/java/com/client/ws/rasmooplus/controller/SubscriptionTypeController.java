@@ -4,6 +4,7 @@ import com.client.ws.rasmooplus.dto.SubscriptionTypeDto;
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.service.SubscriptionTypeService;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,13 @@ public class SubscriptionTypeController {
         this.subscriptionTypeService = subscriptionTypeService;
     }
 
+    @Cacheable(value = "subscriptionType")
     @GetMapping()
     public ResponseEntity<List<SubscriptionType>> findyAll() {
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findAll());
     }
 
+    @Cacheable(value = "subscriptionType", key = "#id")
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionType> findyById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findById(id));
