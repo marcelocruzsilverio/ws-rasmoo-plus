@@ -8,6 +8,8 @@ import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repository.SubscriptionTypeRepository;
 import com.client.ws.rasmooplus.service.SubscriptionTypeService;
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +27,13 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
 
     @Override
+    @Cacheable(value = "subscriptionType")
     public List<SubscriptionType> findAll() {
         return subscriptionTypeRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "subscriptionType", key = "#id")
     public SubscriptionType findById(Long id) {
         return getSubscriptionType(id);
     }
@@ -37,6 +41,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
 
     @Override
+    @CacheEvict(value = "subscriptionType", allEntries = true)
     public SubscriptionType updateSubscriptionType(Long id, SubscriptionTypeDto subscriptionTypeDto) {
         getSubscriptionType(id);
         subscriptionTypeDto.setId(id);
@@ -45,6 +50,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     }
 
     @Override
+    @CacheEvict(value = "subscriptionType", allEntries = true)
     public SubscriptionType createSubscriptionType(SubscriptionTypeDto subscriptionTypeDto) {
         if (Objects.nonNull(subscriptionTypeDto.getId())) {
             throw  new BadRequestException("SubscriptionType Id needs to be null");
@@ -53,6 +59,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     }
 
     @Override
+    @CacheEvict(value = "subscriptionType", allEntries = true)
     public void deleteSubscriptionType(Long id) {
         getSubscriptionType(id);
         subscriptionTypeRepository.deleteById(id);
