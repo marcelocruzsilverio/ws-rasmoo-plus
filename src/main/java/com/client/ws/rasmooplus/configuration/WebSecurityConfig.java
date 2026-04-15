@@ -35,10 +35,14 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/subscription-type", "/subscription-type/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/payment/process").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/recovery-code/send").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/recovery-code/validate").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/recovery-code/update-password").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
