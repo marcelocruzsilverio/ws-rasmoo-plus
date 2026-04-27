@@ -33,9 +33,9 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
     private final RestTemplate restTemplate;
     private final HttpHeaders headers;
 
-    public WsRaspayIntegrationImpl() {
-       restTemplate = new RestTemplate();
-       headers = getHttpHeaders();
+    public WsRaspayIntegrationImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.headers = getHttpHeaders();
     }
     @Override
     public CustomerDto createCustomer(CustomerDto customerDto) {
