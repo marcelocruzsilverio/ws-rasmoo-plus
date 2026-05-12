@@ -1,7 +1,8 @@
 package com.client.ws.rasmooplus.configuration.filter;
 
-import com.client.ws.rasmooplus.service.impl.UserDetailsServiceImpl;
+import com.client.ws.rasmooplus.service.TokenJwtService;
 import com.client.ws.rasmooplus.service.impl.TokenJwtServiceImpl;
+import com.client.ws.rasmooplus.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,10 +19,10 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final TokenJwtServiceImpl tokenJwtService;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final TokenJwtService tokenJwtService;
+    private final UserDetailsService userDetailsService;
 
-    public JwtAuthFilter(TokenJwtServiceImpl tokenJwtService, UserDetailsServiceImpl userDetailsService) {
+    public JwtAuthFilter(TokenJwtService tokenJwtService, UserDetailsService userDetailsService) {
         this.tokenJwtService = tokenJwtService;
         this.userDetailsService = userDetailsService;
     }
